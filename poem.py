@@ -9,6 +9,7 @@ Created on Thu Feb 22 15:20:22 2018
 import urllib.request
 from bs4 import BeautifulSoup as bs
 import pandas as pd
+import numpy as np
 
 file = urllib.request.urlopen("http://runeberg.org/kalevala/42.html")
 document= bs(file.read()).get_text()
@@ -64,19 +65,23 @@ for i, ele in enumerate(poem.split()[2:]):
 sf=pd.DataFrame()
 sf['words']=None
 for i, ele in enumerate(poem_body_lowercase):
+    print(i)
     sf.loc[i+1,'words']= ele
     count= poem_body_lowercase.count(ele)
     sf.loc[i+1,'count']= count
-    
+    sf.loc[i+1, 'time']= i+1
+    rt=[i for i, val in enumerate(poem_body_lowercase) if val==ele]
+    if len(rt)>1:
+        k=[]
+        for ind in range(len(rt)):
+            if ind+1 <len(rt):
+                t1=rt[ind]
+                t2=rt[ind+1]
+                delta=t2-t1
+                k.append(delta)
+                ind+=1
+            av=np.mean(k)
+            sf.loc[i+1, 'avg_wt']=av
+    else:
+        sf.loc[i+1, 'avg_wt']=0
 
-
-    data.loc[data['first_name'] == 'Antonio', 'city':'email']
-#* output the following for the top 100 words by count in the text:
-# word, count, average waiting time between subsequent occurrences of the same word in
-#the whole text
-# * No need to handle punctuation etc. i.e. "upottajahan." is one word.
-
-#new-word: delta t 1 h
-# new-line: delta t 2 h
-# new chapter (two newlines): delta t 6 h
-# you should end up with something like {word_1: t_1, word_2: t_2, ...} 
