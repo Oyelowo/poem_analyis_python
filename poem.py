@@ -24,74 +24,33 @@ poem=document[start:end]
 
 #READING FROM THE USER DIRECTORY
 poem_filepath = "C:/Users/oyeda/Desktop/Oyedayo_Oyelowo_verto_data_analyst/poem.txt"
-poem_open=open(poem_filepath)
+poem_open=open(poem_filepath, 'r')
 poem=poem_open.read()
 print(poem)
+poem_open.close()
 
-# =============================================================================
-# import os
-# print(os.getcwd())
-# 
-# 
-# import os
-# dir = os.path.dirname(__file__)
-# filename = os.path.join(dir, 'poem.txt')
-# filename
-# #file:///C:/Users/oyeda/Desktop/Oyedayo_Oyelowo_verto_data_analyst/python_script
-# import os
-# import sys,os
-# sys.path.append(os.path.realpath("Oyedayo_Oyelowo_verto_data_analyst/poem.txt"))
-# 
-# import csv
-# import os.path
-# 
-# my_path = os.path.abspath(os.path.dirname(__file__))
-# path = os.path.join("Oyedayo_Oyelowo_verto_data_analyst/poem.txt")
-# with open(path) as f:
-#     test = [line for line in csv.reader(f)]
-# 
-# os.getcwd()
-# os.chdir('C:/Users/oyeda/Desktop/Oyedayo_Oyelowo_verto_data_analyst/')
-# print(os.listdir())
-# 
-# 
-# print(os.environ.get('HOME'))
-# os.path.dirname("Oyedayo_Oyelowo_verto_data_analyst/poem.txt")
-# os.path.exists("Oyedayo_Oyelowo_verto_data_analyst/poem.txt")
-# os.path.isdir("Oyedayo_Oyelowo_verto_data_analyst/poem.txt")
-# os.path.isfile("Oyedayo_Oyelowo_verto_data_analyst/poem.txt")
-# os.path.splitext("Oyedayo_Oyelowo_verto_data_analyst/poem.txt")
-# 
-# from pathlib import Path
-# 
-# data_folder = Path("Desktop/Oyedayo_Oyelowo_verto_data_analyst/")
-# 
-# file_to_open = data_folder / "poem.txt"
-# 
-# f = open(file_to_open)
-# 
-# print(f.read())
-# 
-# 
-# # Set the directory you want to start from
-# rootDir = '.poem.txt'
-# for dirName, subdirList, fileList in os.walk(rootDir):
-#     print('Found directory: %s' % dirName)
-#     for fname in fileList:
-#         print('\t%s' % fname)
-# =============================================================================
+#ensure it is the beginning of the text
+poem_open.seek(0)
+poem_open.readlines()
+poem_open.readline(5)
+
+import re
+#use regular expression to check for new line.
+#here, after the newline, it searches for any character. This is done to 
+#separate new lines from new paragraph
+len(re.findall('\n.',poem))
+regex = re.compile('\n.')
+ll = regex.split(poem)
+ll[281]
+        
+####NEW Paragraph
+len(k)
+poem.split('\n\n')
 
 
 
 
-
-os.path.abspath("poem.txt")
-jj=os.path.abspath("poem.txt")
-kkn=(open(jj).read())
-
-
-
-
+kl=poem
 for key in kl.keys():
      print("dictionary includes", key)
 
