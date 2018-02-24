@@ -41,13 +41,14 @@ POEM_BODY_LOWERCASE = POEM_BODY.lower()
 
 #CREATE CORRESPONDING TIME COST FOR EVERY WORD
 COST_LIST = []
-COST = 0
+COST = 1
 COST_LIST.append(COST)
 for i, paragraph in enumerate(POEM_BODY_LOWERCASE.split("\n\n")):
     for j, line in enumerate(paragraph.split("\n")):
-        for h in range(len(line.split())-1):
-            COST += 1
-            COST_LIST.append(COST)
+        for h in range(len(line.split())):
+            if h < len(line.split())-1:
+                COST += 1
+                COST_LIST.append(COST)
         if j < len(paragraph.split("\n"))-1: 
             COST += 2
             COST_LIST.append(COST)   
@@ -55,3 +56,5 @@ for i, paragraph in enumerate(POEM_BODY_LOWERCASE.split("\n\n")):
         COST += 6
         COST_LIST.append(COST)
 a=COST_LIST
+
+
