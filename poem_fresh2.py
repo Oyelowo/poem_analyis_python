@@ -21,7 +21,7 @@ from bs4 import BeautifulSoup as bs
 
 #READING DIRECTLY FROM THE HTML PAGE
 FILE = urllib.request.urlopen("http://runeberg.org/kalevala/42.html")
-DOCUMENT = bs(FILE.read()).get_text()
+DOCUMENT = bs(FILE.read(), "lxml").get_text()
 START = DOCUMENT.find('Kahdesviidettä runo')
 END = DOCUMENT.find('Project Runeberg,')
 POEM = DOCUMENT[START:END]
@@ -41,20 +41,23 @@ POEM_BODY_LOWERCASE = POEM_BODY.lower()
 
 #CREATE CORRESPONDING TIME COST FOR EVERY WORD
 COST_LIST = []
+#Initial Cost
 COST = 1
 COST_LIST.append(COST)
+LAST_ELEMENT=1
 for i, paragraph in enumerate(POEM_BODY_LOWERCASE.split("\n\n")):
     for j, line in enumerate(paragraph.split("\n")):
         for h in range(len(line.split())):
-            if h < len(line.split())-1:
+            if h < len(line.split())-LAST_ELEMENT:
                 COST += 1
                 COST_LIST.append(COST)
-        if j < len(paragraph.split("\n"))-1: 
+        if j < len(paragraph.split("\n"))-LAST_ELEMENT: 
             COST += 2
             COST_LIST.append(COST)   
-    if i < len(POEM_BODY_LOWERCASE.split("\n\n"))-1:
+    if i < len(POEM_BODY_LOWERCASE.split("\n\n"))-LAST_ELEMENT:
         COST += 6
         COST_LIST.append(COST)
-a=COST_LIST
+
+
 
 
