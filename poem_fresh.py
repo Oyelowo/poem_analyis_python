@@ -28,11 +28,12 @@ for i, paragraph in enumerate(POEM_BODY_LOWERCASE.split("\n\n")):
                 COST += 1
                 COST_LIST.append(COST)
         if j < len(paragraph.split("\n"))-1:
-            COST += 6
+            COST += 2
             COST_LIST.append(COST)
     if i < len(POEM_BODY_LOWERCASE.split("\n\n"))-1:
         COST += 6
         COST_LIST.append(COST)
+
 
 
 
