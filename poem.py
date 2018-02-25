@@ -9,6 +9,7 @@ import pandas as pd
 import numpy as np
 import os
 
+
 def read_text(filepath, strip_title=None):
     """read_poem"""
     #READING FROM THE USER DIRECTORY
@@ -24,17 +25,17 @@ def words_list(text_data):
    return text_data.lower().split()
     
 
-def delta_time_list(text_data, initial_time = 1, word_time=1, line_time=2, chapter_time=6):
+def delta_time_list(text_data, word_time=1, line_time=2, chapter_time=6):
     """delta_time"""
     #CONVERT THE CONTENT TO LOWERCASE
     text_lower = text_data.lower()
     delta_time_list = []
-    time_cost = initial_time
+    time_cost = 1
     delta_time_list.append(time_cost)
     last_element = 1
     for index_chp, chapter in enumerate(text_lower.split("\n\n")):
         for index_ln, line in enumerate(chapter.split("\n")):
-            for index_wd in range(len(line.split())):
+            for index_wd, word in enumerate(line.split()):
                 if index_wd < len(line.split()) - last_element:
                     time_cost += word_time
                     delta_time_list.append(time_cost)
@@ -47,7 +48,6 @@ def delta_time_list(text_data, initial_time = 1, word_time=1, line_time=2, chapt
     return delta_time_list
 
 
-###############################################################################
 def words_time_str(text_data):
     dt_list = delta_time_list(text_data)
     w_list = words_list(text_data)
@@ -55,6 +55,7 @@ def words_time_str(text_data):
     words_time = ["{0}: t_{1}".format(w, dt) for w, dt in zip(w_list, dt_list)]
     words_time_str = str(words_time).strip("[]")
     return words_time_str
+
 
 def words_time_dict(text_data):
     """#Create a dictionary for each word as the key and their corresponding time_cost
@@ -66,9 +67,8 @@ def words_time_dict(text_data):
         wt_dict[key].append(value)
     return wt_dict
 
-def words_count_awt_df(text_data, myfolder=None, filename='Output', sep=";", \
-                       file_format=".txt"):
-    
+
+def words_count_awt_df(text_data):
     wt_dict = words_time_dict(text_data)
     #Create an empty dataframe.
     output_data = pd.DataFrame()
@@ -76,10 +76,24 @@ def words_count_awt_df(text_data, myfolder=None, filename='Output', sep=";", \
         print('Processing {0}.......{1} out of{2}'.format(key, i+1, len(wt_dict)))
         output_data.loc[key, 'words'], output_data.loc[key, 'count'] = key, len(value)
         if len(value) < 2:
-            output_data.loc[key, 'avg_tm'] = 0
+            output_data.loc[key, 'avg_wait_time'] = 0
         else:
-            output_data.loc[key, 'avg_tm'] = np.mean(np.diff(value))
-    if myfolder is not None:
-        filepath = os.path.join(myfolder, filename + file_format)
-        output_data.to_csv(filepath, sep)  
+            output_data.loc[key, 'avg_wait_time'] = np.mean(np.diff(value))
     return output_data
+
+
+def sort_words(text_data, by='count', top_rank_words = 100, ascending=False\
+                 ,myfolder=None,filename='Output', sep=";",file_format=".txt"):
+    by=by.lower()
+    if by!='count' and by!='avg_wait_time':
+        raise ValueError("NOTE: You can only sort the dataframe by using 'count' or 'avg_wait_time'.\
+              Make sure the spelling is correct but it is not case sensitive") 
+    else:
+        words_df = words_count_awt_df(text_data)
+        words_df = words_df.sort_values(by=by, ascending=ascending)
+        words_df = words_df[0:top_rank_words]
+        if myfolder is not None:
+            filepath = os.path.join(myfolder, filename + file_format)
+            words_df.to_csv(filepath, sep)  
+    return words_df
+    
