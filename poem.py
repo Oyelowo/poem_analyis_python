@@ -82,7 +82,7 @@ def words_count_awt_df(text_data):
     return output_data
 
 
-def sort_words(text_data, by='count', top_rank_words = 100, ascending=False\
+def sort_words(text_data, by='count', rank_words = 100, ascending=False\
                  ,myfolder=None,filename='Output', sep=";",file_format=".txt"):
     by=by.lower()
     if by!='count' and by!='avg_wait_time':
@@ -91,7 +91,7 @@ def sort_words(text_data, by='count', top_rank_words = 100, ascending=False\
     else:
         words_df = words_count_awt_df(text_data)
         words_df = words_df.sort_values(by=by, ascending=ascending)
-        words_df = words_df[0:top_rank_words]
+        words_df = words_df[0:rank_words]
         if myfolder is not None:
             filepath = os.path.join(myfolder, filename + file_format)
             words_df.to_csv(filepath, sep)  
