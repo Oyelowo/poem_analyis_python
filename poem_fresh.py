@@ -18,28 +18,34 @@ POEM_BODY = POEM.lstrip('Kahdesviidettä runo\n')
 
 #CONVERT THE CONTENT TO LOWERCASE
 POEM_BODY_LOWERCASE = POEM_BODY.lower()
-COST_LIST = []
+COST_TIME_LIST = []
 COST = 1
-COST_LIST.append(COST)
-for i, paragraph in enumerate(POEM_BODY_LOWERCASE.split("\n\n")):
-    for j, line in enumerate(paragraph.split("\n")):
-        for h in range(len(line.split())):
-            if h < len(line.split())-1:
+COST_TIME_LIST.append(COST)
+for index_chp, chapter in enumerate(POEM_BODY_LOWERCASE.split("\n\n")):
+    for index_ln, line in enumerate(chapter.split("\n")):
+        for index_wd in range(len(line.split())):
+            if index_wd < len(line.split())-1:
                 COST += 1
-                COST_LIST.append(COST)
-        if j < len(paragraph.split("\n"))-1:
+                COST_TIME_LIST.append(COST)
+        if index_ln < len(chapter.split("\n"))-1:
             COST += 2
-            COST_LIST.append(COST)
-    if i < len(POEM_BODY_LOWERCASE.split("\n\n"))-1:
+            COST_TIME_LIST.append(COST)
+    if index_chp < len(POEM_BODY_LOWERCASE.split("\n\n"))-1:
         COST += 6
-        COST_LIST.append(COST)
+        COST_TIME_LIST.append(COST)
 
+
+###############################################################################
+#Get the list of words from the Poem
+WORD_LIST = POEM_BODY_LOWERCASE.split()
+
+#The position of each word corresponds with the cumulative time cost(or time axis) above
+LIST_DELTA_TIME = ["{0}: t_{1}".format(w, t) for w, t in zip(WORD_LIST, COST_TIME_LIST)]
 
 
 
 ##############################################################################
-#The position of each word corresponds with the cumulative time cost above
-WORD_LIST = POEM_BODY_LOWERCASE.split()
+
 #Create an empty dataframe.
 WORDS_DATA = pd.DataFrame()
 for i, word_in_list in enumerate(WORD_LIST):
@@ -63,4 +69,5 @@ GROUPED = WORDS_DATA.groupby('words')
 WORDS_DATA_GROUPED = GROUPED['count', 'Average_wt_time'].agg([np.unique]).reset_index()
 WORDS_DATA_GROUPED.columns = WORDS_DATA_GROUPED.columns.droplevel(1)
 WORDS_DATA_GROUPED = WORDS_DATA_GROUPED.sort_values(by='count', ascending=False)
-    
+WORDS_DATA_GROUPED = WORDS_DATA_GROUPED[0:100].reset_index()
+   
