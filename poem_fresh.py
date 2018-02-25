@@ -41,7 +41,7 @@ WORD_LIST = POEM_BODY_LOWERCASE.split()
 
 #The position of each word corresponds with the cumulative time cost(or time axis) above
 LIST_DELTA_TIME = ["{0}: t_{1}".format(w, t) for w, t in zip(WORD_LIST, COST_TIME_LIST)]
-
+#az = dict((el, h) for el,h in zip(WORD_LIST, COST_TIME_LIST))
 
 
 ##############################################################################
@@ -53,7 +53,7 @@ for i, word_in_list in enumerate(WORD_LIST):
     WORDS_DATA.loc[i, 'words'] = word_in_list
     WORDS_DATA.loc[i, 'count'] = WORD_LIST.count(word_in_list)
 #    get the list of positions where each alphabet occured
-    letter_list = [idx for idx, letter in enumerate(WORD_LIST) if letter == word_in_list]
+    letter_list = [idx for letter, idx in zip(WORD_LIST, COST_TIME_LIST) if letter == word_in_list]
     if len(letter_list) > 1:
         delta_time_list = []
         for value, letter in enumerate(letter_list):
