@@ -4,7 +4,7 @@ Created on Sat Feb 24 06:48:04 2018
 @author: Oyedayo Oyelowo
 email: oyelowo.oyedayo@helsinki.fi, oyedayooyelowo@gmail.com
 Title :Text Analysis
-Note : This module was created to analyse a poem but can be used for other
+Description : This module was created to analyse a poem but can be used for other
         articles too. It mainly performs the below functions:
         1. Read the text with option of deleting the title
         2. creating a list of words in the text.
@@ -27,7 +27,7 @@ import numpy as np
 
 def read_text(filepath, strip_title=None):
     """
-    This reads the text, with the option of deleting the title. However, it 
+    This reads the text, with the option of deleting the title. However, it
     is recommended to deleted the title before reading the file.
     Arguments:
         filepath : the filepath of the text to be read.
@@ -109,7 +109,6 @@ def words_time_str(data):
         data : the data with the texts.
     Example:
         words_time_str(data=data)
-
     """
 #    get all the delta time list
     dt_list = delta_time_list(data)
@@ -197,11 +196,12 @@ def top_words_df(data, rank_words=100):
     return words_df.reset_index(drop=True)
 
 
-def export_data(dataframe, myfolder=None, filename='Output', sep=";", file_format=".txt"):
+def write_data(dataframe, myfolder=os.getcwd(), filename='Output', sep=";", file_format=".txt"):
     """
     This exports the dataframe.
     Arguments:
-        myfolder : the folder path you wish to write the data to.
+        myfolder : the folder path you wish to write the data to. Default
+                    path is your current working directory.
         filename : the name of file you wish to use for the data.
             sep :  separator of dataframe to be exported(e.g ';', '\t', ',')
         file_format : format of the output dataframe(e.g '.txt', '.csv')
@@ -212,3 +212,7 @@ def export_data(dataframe, myfolder=None, filename='Output', sep=";", file_forma
     """
     filepath = os.path.join(myfolder, filename + file_format)
     dataframe.to_csv(filepath, sep)
+    if myfolder == os.getcwd():
+        print("Your data has been saved to your present working directory. You can also\
+              specify another folder to save your file.")
+    

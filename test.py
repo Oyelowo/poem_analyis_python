@@ -4,44 +4,50 @@ Created on Sat Feb 24 08:30:12 2018
 
 @author: Oyedayo Oyelowo
 email: oyelowo.oyedayo@helsinki.fi, oyedayooyelowo@gmail.com
+Description: This script is used to test the text_analysis module, to demonstrate its usage.
+
+NOTE: MAKE SURE YOUR WORKING DIRECTORY IS SET TO THE FOLDER WHERE THE MODULE IS!
 """
 
 import poem as pm
 
+#read filepath.NOTE: Change the filepath to your filepath!
+FILEPATH = "C:/Users/oyeda/Desktop/Oyedayo_Oyelowo_data_analyst/POEM_RAW.txt"
 
-#read filepath
-filepath = "C:/Users/oyeda/Desktop/Oyedayo_Oyelowo_verto_data_analyst/poem.txt"
-
+###################################################################################
+#MAIN FUNCTIONS
 #read data
-data = pm.read_text(filepath, strip_title="Kahdesviidettä runo")
+POEM_DATA = pm.read_text(FILEPATH, strip_title="Kahdesviidettä runo")
 
-TOP_100_WORDS = pm.top_words_df(data)
+#get the top 100 words by count and print
+TOP_100_WORDS = pm.top_words_df(data=POEM_DATA)
 print(TOP_100_WORDS)
 
-pm.export_data(dataframe=TOP_100_WORDS, 
-               myfolder="C:/Users/oyeda/Desktop/Oyedayo_Oyelowo_verto_data_analyst",
-               filename="POEM_ANALYSED", sep="\t")
-
-WORLD_LIST = pm.words_list_lower(T)
-
-delta_time_list
-words_time_str
-words_time_dict
-unsorted_words_df
+#export data
+pm.write_data(dataframe=TOP_100_WORDS, filename="POEM_ANALYSED", sep="\t")
 
 
+####################################################################################
+#OTHER MINOR FUNCTIONS
+#get the list of the words.
+WORLD_LIST = pm.words_list_lower(data=POEM_DATA)
+print(WORLD_LIST)
 
+#Get the time delta time as a list, considering that every new word takes
+#1 h, every new line takes 2 h and every new chapter takes 6 h to get to.
+T_DELTA_LIST = pm.delta_time_list(data=POEM_DATA, word_time=1, line_time=2, chapter_time=6)
+print(T_DELTA_LIST)
 
-aa = pm.words_list(a)
+#include the time exis after every word in the poem
+POEM_TIME_AXIS = pm.words_time_str(data=POEM_DATA)
+print(POEM_TIME_AXIS)
 
-ab=pm.delta_time_list(a)
+#create a dictionary with words as the keys and each key with its corresponding,
+#delta time.
+WORDS_DT_DICT = pm.words_time_dict(POEM_DATA)
+print(WORDS_DT_DICT)
 
-aq=pm.words_time_str(a)
-az=pm.words_time_dict(a)
-ae=pm.words_count_awt_df(a)
-aab=pm.sort_words(a, by='coUnT')
-
-__all__ = ['read_text', 'words_list', 'delta_time_list', 'words_time_str',
-           'words_time_dict', 'words_count_awt_df']
-
-ae.sort_values(by='count', ascending=False)
+#create a dataframe from the text, which includes variables such as: the words,
+#their count/freauency and average waiting time.
+WORDS_UNSORTED = pm.unsorted_words_df(POEM_DATA)
+print(WORDS_UNSORTED)
