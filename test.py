@@ -10,20 +10,26 @@ import poem as pm
 
 
 #read filepath
-filepath = "C:/Users/oyeda/Desktop/Task/verto_analytics_finland/poem.txt"
+filepath = "C:/Users/oyeda/Desktop/Oyedayo_Oyelowo_verto_data_analyst/poem.txt"
 
 #read data
 data = pm.read_text(filepath, strip_title="Kahdesviidettä runo")
 
 TOP_100_WORDS = pm.top_words_df(data)
+print(TOP_100_WORDS)
 
-words_list_lower
+pm.export_data(dataframe=TOP_100_WORDS, 
+               myfolder="C:/Users/oyeda/Desktop/Oyedayo_Oyelowo_verto_data_analyst",
+               filename="POEM_ANALYSED", sep="\t")
+
+WORLD_LIST = pm.words_list_lower(T)
+
 delta_time_list
 words_time_str
 words_time_dict
 unsorted_words_df
 
-export_data
+
 
 
 aa = pm.words_list(a)

@@ -44,34 +44,34 @@ def read_text(filepath, strip_title=None):
     return text
 
 
-def words_list_lower(text_data):
+def words_list_lower(data):
     """This creates list of words from the text in lowercase.
     Argument:
-        text_data : this should be an imported file containing the texts.
+        data : this should be an imported file containing the texts.
     Example:
-        words_list_lower(text_data = data)
+        words_list_lower(data = data)
     """
 #    Convert the text to lowercase and get the list of words from it.
-    return text_data.lower().split()
+    return data.lower().split()
 
 
-def delta_time_list(text_data, word_time=1, line_time=2, chapter_time=6):
+def delta_time_list(data, word_time=1, line_time=2, chapter_time=6):
     """
     This creates a list of the time difference between all the words in the text.
     The default delta time or time change between words, lines and chapters/paragraph,
     can be changed by user. This flexibility allows user to increase or reduce time cost
     of reading because speed of reading varies amongst people.
     Arguments:
-        text_data : the data with the texts.
+        data : the data with the texts.
         word_time : the time it takes to get to the next word. Default value is 1.
         line_time : the time it takes to get to the next line. Default value is 2.
         chapter_time : the time it takes to get to the next Chapter or paragraph.
                         Default value is 6.
     Example:
-        delta_time_list(text_data=data, word_time=1, line_time=2, chapter_time=6)
+        delta_time_list(data=data, word_time=1, line_time=2, chapter_time=6)
     """
 #convert the the text into lower case. This is to avoid problems with uppercase and lowercase
-    text_lower = text_data.lower()
+    text_lower = data.lower()
 #    set the initial time of the text.
     delta_time = 1
 #    create a list with initial time.
@@ -100,20 +100,20 @@ def delta_time_list(text_data, word_time=1, line_time=2, chapter_time=6):
     return dt_list
 
 
-def words_time_str(text_data):
+def words_time_str(data):
     """
     This includes the time axis into the text, based on the time weight on
     new words, new lines and new chapters.
     Arguments:
-        text_data : the data with the texts.
+        data : the data with the texts.
     Example:
-        words_time_str(text_data=data)
+        words_time_str(data=data)
 
     """
 #    get all the delta time list
-    dt_list = delta_time_list(text_data)
+    dt_list = delta_time_list(data)
 #    get the list of  words
-    w_list = words_list_lower(text_data)
+    w_list = words_list_lower(data)
 # The position of each word corresponds with the cumulative time cost(or time axis) above.
 #get the words and delta time.
     words_time = ["{0}: t_{1}".format(w, dt) for w, dt in zip(w_list, dt_list)]
@@ -122,19 +122,19 @@ def words_time_str(text_data):
     return wt_str
 
 
-def words_time_dict(text_data):
+def words_time_dict(data):
     """
     This creates a dictionary for each word as the key and their corresponding time_cost
     #as the values
     Arguments:
-        text_data : the data with the texts.
+        data : the data with the texts.
     Example:
-        words_time_dict(text_data=data)
+        words_time_dict(data=data)
     """
 #   get all the delta time list above
-    dt_list = delta_time_list(text_data)
+    dt_list = delta_time_list(data)
 #    get the list of all corresponding words
-    word_list = words_list_lower(text_data)
+    word_list = words_list_lower(data)
 #create an empty dictionary which allows each to take in value as list for all the points
 #where the key reoccurs.
     wt_dict = defaultdict(list)
@@ -145,17 +145,17 @@ def words_time_dict(text_data):
     return wt_dict
 
 
-def unsorted_words_df(text_data):
+def unsorted_words_df(data):
     """
     This creates a dataframe which includes all the words, their count and
     average waiting time.
     Arguments:
-        text_data : the data with the texts.
+        data : the data with the texts.
     Example:
-        unsorted_words_df(text_data=data)
+        unsorted_words_df(data=data)
     """
 #    get the dictionary which includes all the words and their corresponding delta times.
-    wt_dict = words_time_dict(text_data)
+    wt_dict = words_time_dict(data)
 #    Create an empty dataframe where the variables will be included.
     output_data = pd.DataFrame()
 #  get the indexes, the words(key) and value(delta times) by iterating through
@@ -173,27 +173,27 @@ def unsorted_words_df(text_data):
 #if it occurs more than once, calculate the average of the cumulative difference
 # of the delta time(value) and insert as the average waiting time.
             output_data.loc[key, 'avg_wait_time'] = np.mean(np.diff(value))
-    return output_data
+    return output_data.reset_index(drop=True)
 
 
 
-def top_words_df(text_data, rank_words=100):
+def top_words_df(data, rank_words=100):
     """
     This creates a dataframe with the top 100 words by count by default. Number of words
     to be ranked can also be increased.
     Arguments:
-        text_data : the data with the texts.
+        data : the data with the texts.
         rank_words : the number of words you want to rank.
     Example:
-        top_words_df(text_data=data, word_time=1, line_time=2, chapter_time=6)
+        top_words_df(data=data, word_time=1, line_time=2, chapter_time=6)
     """
 #        get the unsorted dataframe with words, count and average waiting time.
-    words_df = unsorted_words_df(text_data)
+    words_df = unsorted_words_df(data)
 #       sort the dataframe by the variable name
-    words_df = words_df.sort_values(by='count', ascending=True)
+    words_df = words_df.sort_values(by='count', ascending=False)
 #depending on user, take the top/bottom number of sorted rows by count or avg_wait_time.
     words_df = words_df[0:rank_words]
-    return words_df
+    return words_df.reset_index(drop=True)
 
 
 def export_data(dataframe, myfolder=None, filename='Output', sep=";", file_format=".txt"):
