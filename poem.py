@@ -27,7 +27,8 @@ import numpy as np
 
 def read_text(filepath, strip_title=None):
     """
-    This reads the text, with the option of deleting the title.
+    This reads the text, with the option of deleting the title. However, it 
+    is recommended to deleted the title before reading the file.
     Arguments:
         filepath : the filepath of the text to be read.
         strip_title : default value is None. If the title is included as a string,
@@ -40,7 +41,7 @@ def read_text(filepath, strip_title=None):
 #    if the title is included as argument
     if strip_title:
 #        delete the title
-        text = text.lstrip(strip_title)
+        text = text.lstrip(strip_title + ("\n"))
     return text
 
 
