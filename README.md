@@ -1,9 +1,9 @@
-The name of the module is "poempy".
-The module can be found under the folder/package "text_analysis"
+The name of the module is "**_poempy_**".
+The module can be found under the folder/package "**_text_analysis_**"
 
-There is  "task_poem_analysis.py" which includes how to use the funtions in the module.
+There is  "**_task_poem_analysis.py_**" which includes how to use the funtions in the module.
 
-The module analyses articles/texts/poems and generates:
+The module analyses articles por texts or poems and generates:
 
 -  the reading time of the entire text,
 -  frequency of each word,
