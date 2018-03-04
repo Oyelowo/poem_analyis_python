@@ -27,7 +27,7 @@ import pandas as pd
 import numpy as np
 
 
-def read_text(filepath, strip_title=None):
+def read_text(filepath, strip_title=None, encoding="utf-8"):
     """
     This reads the text, with the option of deleting the title. However, it
     is recommended to deleted the title before reading the file.
@@ -35,10 +35,11 @@ def read_text(filepath, strip_title=None):
         filepath : the filepath of the text to be read.
         strip_title : default value is None. If the title is included as a string,
         it will be deleted from the text.
+        encoding : encoding of the string. Default is "utf-8"
     Example:
-        read_text(filepath = 'C:/Users/oyelowo/poem.txt, strip_title='KahdesviidettÃƒÂ¤ runo')
+        read_text(filepath = 'C:/Users/oyelowo/poem.txt, strip_title='Kahdesviidettä runo')
     """
-    with open(filepath, 'r') as file:
+    with open(filepath, encoding=encoding) as file:
         text = file.read()
 #   if the title is included as argument
     if strip_title:
@@ -235,12 +236,12 @@ def write_data(dataframe, myfolder=os.getcwd(), filename='Output', sep=";", file
         file_format : format of the output dataframe(e.g '.txt', '.csv')
     Example:
         export_data(dataframe=data, myfolder=C:/Users/oyelowo,
-                    filename='poem', sep=";",file_format=".txt")
+                    filename='poem', sep=";", file_format=".txt")
 
     """
     filepath = os.path.join(myfolder, filename + file_format)
     dataframe.to_csv(filepath, sep)
     if myfolder == os.getcwd():
         print("Your data has been saved to your present working directory. You can also\
-              specify another folder to save your file.")
+              specify another folder as an argument to save your file. e.g. myfolder=folderpath")
         
